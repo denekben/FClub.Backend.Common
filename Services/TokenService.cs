@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FClub.Backend.Common.Exceptions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,13 +15,14 @@ namespace FClub.Backend.Common.Services
         private const string _lifeTime = "JWT:AccessTokenLifeTime";
         private const string _issuer = "JWT:Issuer";
         private const string _audience = "JWT:Audience";
+        private const string _refreshTokenLifeTime = "JWT:RefreshTokenLifeTime";
 
         public TokenService(IConfiguration config)
         {
             _config = config;
         }
 
-        public string GenerateAccessToken(Guid id, string lastname, string email, string role,
+        public string GenerateAccessToken(Guid id, string firstName, string secondName, string? patronymic, string email, string role,
             string? key = null, string? lifeTime = null, string? issuer = null, string? audience = null)
         {
             if (!(key != null && lifeTime != null && issuer != null && audience != null) &&
@@ -30,7 +32,7 @@ namespace FClub.Backend.Common.Services
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, id.ToString()),
-                new Claim(ClaimTypes.Name, lastname),
+                new Claim(ClaimTypes.Name, firstName + " " + secondName + ((" " + patronymic) ?? "")),
                 new Claim(ClaimTypes.Email, email),
                 new Claim(ClaimTypes.Role, role)
             };
@@ -108,6 +110,16 @@ namespace FClub.Backend.Common.Services
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha512))
                 return null;
             return principal;
+        }
+
+        public DateTime GenerateRefreshTokenExpiresDate(double? refreshTokenLifeTime = null)
+        {
+            var lifetimeDays = refreshTokenLifeTime ?? Convert.ToDouble(_config[_refreshTokenLifeTime]);
+
+            if (lifetimeDays <= 0)
+                throw new DomainException("Refresh token lifetime must be positive");
+
+            return DateTime.UtcNow.AddDays(lifetimeDays);
         }
     }
 }

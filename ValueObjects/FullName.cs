@@ -9,9 +9,9 @@ namespace FClub.Backend.Common.ValueObjects
         private static readonly Regex _secondNamePattern = new(@"^([А-ЯЁ][а-яё]+(?:-[А-ЯЁ][а-яё]+)*|[A-Z][a-z]+(?:['-][A-Z][a-z]+)*)$");
         private static readonly Regex _patronymicPattern = new(@"^([А-ЯЁ][а-яё]{4,}(ович|овна|евич|евна|ич|инична))?$");
 
-        public string FirstName { get; private set; }
-        public string SecondName { get; private set; }
-        public string? Patronymic { get; private set; }
+        public string FirstName { get; set; }
+        public string SecondName { get; set; }
+        public string? Patronymic { get; set; }
 
         private FullName(string firstName, string secondName, string? patronymic)
         {

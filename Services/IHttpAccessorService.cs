@@ -2,6 +2,7 @@
 {
     public interface IHttpContextService
     {
-        public Guid GetCurrentUserId();
+        Guid? GetCurrentUserId();
+        string? GetCurrentUserRoleName();
     }
 }

@@ -10,10 +10,10 @@ namespace FClub.Backend.Common.ValueObjects
         private static readonly Regex _streetPattern = new(@"^[A-Za-zА-Яа-я0-9\s\.,\-']{3,}$");
         private static readonly Regex _houseNumberPattern = new(@"^[0-9]+[A-Za-zА-Яа-я]*(?:[\/\-кК][0-9]+[A-Za-zА-Яа-я]*)?$");
 
-        public string? Country { get; private set; }
-        public string? City { get; private set; }
-        public string? Street { get; private set; }
-        public string? HouseNumber { get; private set; }
+        public string? Country { get; set; }
+        public string? City { get; set; }
+        public string? Street { get; set; }
+        public string? HouseNumber { get; set; }
 
         private Address(string? country, string? city, string? street, string? houseNumber)
         {

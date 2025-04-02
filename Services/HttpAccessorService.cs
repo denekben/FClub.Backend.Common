@@ -13,7 +13,7 @@ namespace FClub.Backend.Common.Services
             _contextAccessor = contextAccessor;
         }
 
-        public Guid GetCurrentUserId()
+        public Guid? GetCurrentUserId()
         {
             var userIdString = _contextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
                 ?? throw new BadRequestException("Cannot find user");
@@ -26,7 +26,7 @@ namespace FClub.Backend.Common.Services
             return userId;
         }
 
-        public string GetCurrentUserRoleName()
+        public string? GetCurrentUserRoleName()
         {
             var roleName = _contextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Role)?.Value
                 ?? throw new BadRequestException("Cannot find user's role");
