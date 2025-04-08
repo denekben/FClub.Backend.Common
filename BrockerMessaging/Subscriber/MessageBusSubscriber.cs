@@ -1,6 +1,6 @@
 ﻿using FClub.Backend.Common.Events.Publisher;
 using FClub.Backend.Common.Events.Subscriber;
-using FClub.Backend.Common.Messages;
+using FClub.Backend.Common.BrokerMessaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

@@ -1,0 +1,6 @@
+C:\Users\Kurbanaev\Desktop\FClub\FClub\FClub.Backend.Common\obj\Debug\net8.0\FClub.Backend.Common.csproj.AssemblyReference.cache
+C:\Users\Kurbanaev\Desktop\FClub\FClub\FClub.Backend.Common\obj\Debug\net8.0\FClub.Backend.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Kurbanaev\Desktop\FClub\FClub\FClub.Backend.Common\obj\Debug\net8.0\FClub.Backend.Common.AssemblyInfoInputs.cache
+C:\Users\Kurbanaev\Desktop\FClub\FClub\FClub.Backend.Common\obj\Debug\net8.0\FClub.Backend.Common.AssemblyInfo.cs
+C:\Users\Kurbanaev\Desktop\FClub\FClub\FClub.Backend.Common\obj\Debug\net8.0\FClub.Backend.Common.csproj.CoreCompileInputs.cache
+C:\Users\Kurbanaev\Desktop\FClub\FClub\FClub.Backend.Common\obj\Debug\net8.0\FClub.Backend.Common.sourcelink.json

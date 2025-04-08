@@ -1,4 +1,4 @@
-﻿namespace FClub.Backend.Common.Messages
+﻿namespace FClub.Backend.Common.BrokerMessaging
 {
     public class RabbitMqConnectionSettings
     {

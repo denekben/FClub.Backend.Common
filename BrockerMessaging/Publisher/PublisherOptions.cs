@@ -1,4 +1,4 @@
-﻿namespace FClub.Backend.Common.Messages.Publisher
+﻿namespace FClub.Backend.Common.BrokerMessaging.Publisher
 {
     public class PublisherOptions
     {

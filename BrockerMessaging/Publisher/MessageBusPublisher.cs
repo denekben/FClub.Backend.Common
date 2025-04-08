@@ -1,6 +1,6 @@
 ﻿using FClub.Backend.Common.Exceptions;
-using FClub.Backend.Common.Messages;
-using FClub.Backend.Common.Messages.Publisher;
+using FClub.Backend.Common.BrokerMessaging;
+using FClub.Backend.Common.BrokerMessaging.Publisher;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;

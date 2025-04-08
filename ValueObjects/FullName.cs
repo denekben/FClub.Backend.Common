@@ -31,5 +31,10 @@ namespace FClub.Backend.Common.ValueObjects
 
             return new FullName(firstName, secondName, patronymic);
         }
+
+        public override string ToString()
+        {
+            return SecondName + " " + FirstName + (Patronymic == null ? "" : (" " + Patronymic));
+        }
     }
 }

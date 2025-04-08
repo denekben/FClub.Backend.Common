@@ -1,9 +1,9 @@
-﻿using FClub.Backend.Common.Events.Publisher;
+﻿using FClub.Backend.Common.BrokerMessaging.Publisher;
+using FClub.Backend.Common.Events.Publisher;
 using FClub.Backend.Common.Events.Subscriber;
-using FClub.Backend.Common.Messages.Publisher;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FClub.Backend.Common.Messages
+namespace FClub.Backend.Common.BrokerMessaging
 {
     public static class MessagesExtensions
     {
