@@ -1,4 +1,4 @@
-﻿namespace FClub.Backend.Common.Events.Subscriber
+﻿namespace FClub.Backend.Common.RabbitMQMessaging.Subscriber
 {
     public class SubscriberOptions
     {

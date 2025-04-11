@@ -1,9 +1,8 @@
-﻿using FClub.Backend.Common.BrokerMessaging.Publisher;
-using FClub.Backend.Common.Events.Publisher;
-using FClub.Backend.Common.Events.Subscriber;
+﻿using FClub.Backend.Common.RabbitMQMessaging.Publisher;
+using FClub.Backend.Common.RabbitMQMessaging.Subscriber;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FClub.Backend.Common.BrokerMessaging
+namespace FClub.Backend.Common.RabbitMQMessaging
 {
     public static class MessagesExtensions
     {

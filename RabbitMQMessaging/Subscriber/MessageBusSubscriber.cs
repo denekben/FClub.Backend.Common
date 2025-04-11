@@ -1,6 +1,4 @@
-﻿using FClub.Backend.Common.Events.Publisher;
-using FClub.Backend.Common.Events.Subscriber;
-using FClub.Backend.Common.BrokerMessaging;
+﻿using FClub.Backend.Common.RabbitMQMessaging.Publisher;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -9,6 +7,8 @@ using RabbitMQ.Client.Events;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+
+namespace FClub.Backend.Common.RabbitMQMessaging.Subscriber;
 
 public class MessageBusSubscriber : BackgroundService
 {

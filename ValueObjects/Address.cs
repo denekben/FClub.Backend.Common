@@ -36,5 +36,18 @@ namespace FClub.Backend.Common.ValueObjects
 
             return new(country, city, street, houseNumber);
         }
+
+        public override string ToString()
+        {
+            var addressParts = new List<string>();
+
+            if (Country != null) addressParts.Add(Country);
+            if (City != null) addressParts.Add(City);
+            if (Street != null) addressParts.Add(Street);
+            if (HouseNumber != null) addressParts.Add(HouseNumber.ToString());
+
+            string result = string.Join(", ", addressParts);
+            return result.TrimEnd(',', ' ');
+        }
     }
 }

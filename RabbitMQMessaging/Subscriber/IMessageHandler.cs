@@ -1,6 +1,6 @@
-﻿using FClub.Backend.Common.Events.Publisher;
+﻿using FClub.Backend.Common.RabbitMQMessaging.Publisher;
 
-namespace FClub.Backend.Common.Events.Subscriber
+namespace FClub.Backend.Common.RabbitMQMessaging.Subscriber
 {
     public interface IMessageHandler<in TEvent> where TEvent : class, IMessage
     {

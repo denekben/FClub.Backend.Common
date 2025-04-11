@@ -1,4 +1,4 @@
-﻿namespace FClub.Backend.Common.Events.Publisher
+﻿namespace FClub.Backend.Common.RabbitMQMessaging.Publisher
 {
     public interface IMessageBusPublisher
     {

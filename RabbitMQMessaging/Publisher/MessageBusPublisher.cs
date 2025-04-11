@@ -1,13 +1,11 @@
 ﻿using FClub.Backend.Common.Exceptions;
-using FClub.Backend.Common.BrokerMessaging;
-using FClub.Backend.Common.BrokerMessaging.Publisher;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
 
-namespace FClub.Backend.Common.Events.Publisher
+namespace FClub.Backend.Common.RabbitMQMessaging.Publisher
 {
     public class RabbitMqPublisher : IMessageBusPublisher
     {
