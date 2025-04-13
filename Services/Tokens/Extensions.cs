@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FClub.Backend.Common.Services.Tokens;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FClub.Backend.Common.Services
 {

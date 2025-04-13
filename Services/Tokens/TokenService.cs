@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace FClub.Backend.Common.Services
+namespace FClub.Backend.Common.Services.Tokens
 {
     public class TokenService : ITokenService
     {
@@ -21,7 +21,7 @@ namespace FClub.Backend.Common.Services
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, id.ToString()),
-                new Claim(ClaimTypes.Name, firstName + " " + secondName + ((" " + patronymic) ?? "")),
+                new Claim(ClaimTypes.Name, firstName + " " + secondName + (" " + patronymic ?? "")),
                 new Claim(ClaimTypes.Email, email),
                 new Claim(ClaimTypes.Role, role)
             };
