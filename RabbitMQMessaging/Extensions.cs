@@ -6,7 +6,7 @@ namespace FClub.Backend.Common.RabbitMQMessaging
 {
     public static class MessagesExtensions
     {
-        public static IServiceCollection AddRabbitMq(
+        public static IServiceCollection AddCustomRabbitMq(
             this IServiceCollection services,
             RabbitMqConnectionSettings connectionSettings,
             PublisherOptions publisherOptions,
@@ -21,7 +21,7 @@ namespace FClub.Backend.Common.RabbitMQMessaging
             return services;
         }
 
-        public static IServiceCollection AddRabbitMq(
+        public static IServiceCollection AddCustomRabbitMq(
             this IServiceCollection services,
             Action<RabbitMqConnectionSettings> configureConnection,
             Action<PublisherOptions>? configurePublisherOptions = null,
@@ -36,7 +36,7 @@ namespace FClub.Backend.Common.RabbitMQMessaging
             var subscriberOptions = new SubscriberOptions();
             configureSubscriberOptions?.Invoke(subscriberOptions);
 
-            services.AddRabbitMq(connectionSettings, publisherOptions, subscriberOptions);
+            services.AddCustomRabbitMq(connectionSettings, publisherOptions, subscriberOptions);
 
             return services;
         }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FClub.Backend.Common")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d639db8d55a6336c144b80e36d4fcdc9f7b96031")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+756cd21e7526ab5d626aa40cf682034b8f7678ea")]
 [assembly: System.Reflection.AssemblyProductAttribute("FClub.Backend.Common")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FClub.Backend.Common")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

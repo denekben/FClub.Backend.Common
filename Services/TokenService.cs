@@ -1,5 +1,4 @@
 ﻿using FClub.Backend.Common.Exceptions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -10,25 +9,15 @@ namespace FClub.Backend.Common.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly IConfiguration _config;
-        private const string _key = "JWT:SigningKey";
-        private const string _lifeTime = "JWT:AccessTokenLifeTime";
-        private const string _issuer = "JWT:Issuer";
-        private const string _audience = "JWT:Audience";
-        private const string _refreshTokenLifeTime = "JWT:RefreshTokenLifeTime";
+        private readonly TokenServiceOptions _options;
 
-        public TokenService(IConfiguration config)
+        public TokenService(TokenServiceOptions options)
         {
-            _config = config;
+            _options = options;
         }
 
-        public string GenerateAccessToken(Guid id, string firstName, string secondName, string? patronymic, string email, string role,
-            string? key = null, string? lifeTime = null, string? issuer = null, string? audience = null)
+        public string GenerateAccessToken(Guid id, string firstName, string secondName, string? patronymic, string email, string role, string? audience = null)
         {
-            if (!(key != null && lifeTime != null && issuer != null && audience != null) &&
-                !(_config[_key] != null && _config[_lifeTime] != null && _config[_issuer] != null && _config[_audience] != null))
-                throw new NullReferenceException("Invalid arguments for token service");
-
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, id.ToString()),
@@ -38,17 +27,17 @@ namespace FClub.Backend.Common.Services
             };
 
             var creds = new SigningCredentials(
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key ?? _config[_key])),
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key)),
                 SecurityAlgorithms.HmacSha512Signature
             );
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(Convert.ToDouble(lifeTime ?? _config[_lifeTime])),
+                Expires = DateTime.UtcNow.AddDays(Convert.ToDouble(_options.AccessTokenLifeTime)),
                 SigningCredentials = creds,
-                Issuer = issuer ?? _config[_issuer],
-                Audience = audience ?? _config[_audience]
+                Issuer = _options.Issuer,
+                Audience = audience ?? _options.Audience
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -58,23 +47,18 @@ namespace FClub.Backend.Common.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public string GenerateAccessToken(string? key = null, string? lifeTime = null, string? issuer = null, string? audience = null)
+        public string GenerateInternalAccessToken(string? audience = null)
         {
-            if (!(key != null && lifeTime != null && issuer != null && audience != null) &&
-                !(_config[_key] != null && _config[_lifeTime] != null && _config[_issuer] != null && _config[_audience] != null))
-                throw new NullReferenceException("Invalid arguments for token service");
-
             var creds = new SigningCredentials(
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key ?? _config[_key])),
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key)),
                 SecurityAlgorithms.HmacSha512Signature
             );
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Expires = DateTime.UtcNow.AddDays(Convert.ToDouble(lifeTime ?? _config[_lifeTime])),
                 SigningCredentials = creds,
-                Issuer = issuer ?? _config[_issuer],
-                Audience = audience ?? _config[_audience]
+                Issuer = _options.Issuer,
+                Audience = audience ?? _options.Audience
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -89,9 +73,9 @@ namespace FClub.Backend.Common.Services
             return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
         }
 
-        public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token, string? key = null)
+        public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
         {
-            if (key == null && _config[_key] == null)
+            if (_options.Key == null)
                 throw new NullReferenceException("Invalid arguments for token service");
 
             var tokenValidationParameters = new TokenValidationParameters
@@ -100,7 +84,7 @@ namespace FClub.Backend.Common.Services
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(key ?? _config[_key])),
+                        Encoding.UTF8.GetBytes(_options.Key)),
                 ValidateLifetime = false
             };
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -114,7 +98,7 @@ namespace FClub.Backend.Common.Services
 
         public DateTime GenerateRefreshTokenExpiresDate(double? refreshTokenLifeTime = null)
         {
-            var lifetimeDays = refreshTokenLifeTime ?? Convert.ToDouble(_config[_refreshTokenLifeTime]);
+            var lifetimeDays = refreshTokenLifeTime ?? Convert.ToDouble(_options.RefreshTokenLifeTime);
 
             if (lifetimeDays <= 0)
                 throw new DomainException("Refresh token lifetime must be positive");

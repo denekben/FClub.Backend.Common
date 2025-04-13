@@ -6,7 +6,7 @@ namespace FClub.Backend.Common.InMemoryBrockerMessaging
 {
     public static class Extensions
     {
-        public static IServiceCollection AddInMemoryMessageBroker(this IServiceCollection services)
+        public static IServiceCollection AddCustomInMemoryMessageBroker(this IServiceCollection services)
         {
             services.AddEvents();
             services.AddMessaging();

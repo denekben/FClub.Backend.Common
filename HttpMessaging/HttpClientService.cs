@@ -1,4 +1,5 @@
 ﻿using FClub.Backend.Common.Exceptions;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
@@ -45,6 +46,43 @@ namespace FClub.Backend.Common.HttpMessaging
                     RequestType.Delete => await SendDeleteWithContent(_hostName + path, httpContent),
                     _ => throw new BadRequestException($"Request type {type} is not supported")
                 };
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new BadRequestException($"{_serviceName ?? "Service"} error: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new ServiceUnavailableException($"{_serviceName ?? "Service"} is unavailable: {ex.Message}");
+            }
+        }
+
+        public async Task SendResponse(string path, object? command, RequestType type, string token)
+        {
+            using var httpContent = new StringContent(
+                JsonSerializer.Serialize(command),
+                Encoding.UTF8,
+                "application/json"
+            );
+
+            try
+            {
+                using var requestMessage = new HttpRequestMessage();
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                requestMessage.Content = httpContent;
+
+                requestMessage.RequestUri = new Uri(_hostName + path);
+                requestMessage.Method = type switch
+                {
+                    RequestType.Post => HttpMethod.Post,
+                    RequestType.Put => HttpMethod.Put,
+                    RequestType.Delete => HttpMethod.Delete,
+                    _ => throw new BadRequestException($"Request type {type} is not supported")
+                };
+
+                HttpResponseMessage response = await _httpClient.SendAsync(requestMessage);
 
                 if (!response.IsSuccessStatusCode)
                 {

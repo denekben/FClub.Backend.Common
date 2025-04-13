@@ -5,12 +5,12 @@ namespace FClub.Backend.Common.Middleware
 {
     public static class Extensions
     {
-        public static IServiceCollection AddErrorHandling(this IServiceCollection services)
+        public static IServiceCollection AddCustomErrorHandling(this IServiceCollection services)
             => services
                 .AddScoped<ErrorHandlerMiddleware>()
                 .AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
 
-        public static IApplicationBuilder UseErrorHandling(this IApplicationBuilder app)
+        public static IApplicationBuilder UseCustomErrorHandling(this IApplicationBuilder app)
         => app.UseMiddleware<ErrorHandlerMiddleware>();
     }
 }

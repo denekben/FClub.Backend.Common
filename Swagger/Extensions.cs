@@ -5,7 +5,7 @@ namespace FClub.Backend.Common.Swagger
 {
     public static class Extensions
     {
-        public static IServiceCollection AddSwagger(this IServiceCollection services, SwaggerOptions swaggerOptions)
+        public static IServiceCollection AddCustomSwagger(this IServiceCollection services, SwaggerOptions swaggerOptions)
         {
             services.AddSwaggerGen(option =>
             {
@@ -38,12 +38,12 @@ namespace FClub.Backend.Common.Swagger
             return services;
         }
 
-        public static IServiceCollection AddSwagger(this IServiceCollection services, Action<SwaggerOptions>? configureSwaggerOptions = null)
+        public static IServiceCollection AddCustomSwagger(this IServiceCollection services, Action<SwaggerOptions>? configureSwaggerOptions = null)
         {
             var swaggerOptions = new SwaggerOptions();
             configureSwaggerOptions?.Invoke(swaggerOptions);
 
-            services.AddSwagger(swaggerOptions);
+            services.AddCustomSwagger(swaggerOptions);
 
             return services;
         }
