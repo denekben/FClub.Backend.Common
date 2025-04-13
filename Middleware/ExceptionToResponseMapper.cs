@@ -13,19 +13,13 @@ namespace FClub.Backend.Common.Middleware
         {
             if (exception is FClubException ex)
             {
-                if (ex.Errors.Count > 0)
+                if (exception is NotFoundException)
                 {
-                    var errors = new List<Error>();
-
-                    foreach (var kvp in ex.Errors)
-                    {
-                        foreach (var errorMessage in kvp.Value)
-                        {
-                            errors.Add(new Error(GetErrorCode(ex), errorMessage));
-                        }
-                    }
-
-                    return new ExceptionResponse(new ErrorsResponse(errors.ToArray()), HttpStatusCode.BadRequest);
+                    return new ExceptionResponse(new ErrorsResponse(new Error(GetErrorCode(ex), ex.Message)), HttpStatusCode.NotFound);
+                }
+                else if (exception is ServiceUnavailableException)
+                {
+                    return new ExceptionResponse(new ErrorsResponse(new Error(GetErrorCode(ex), ex.Message)), HttpStatusCode.InternalServerError);
                 }
                 else
                 {
@@ -35,7 +29,6 @@ namespace FClub.Backend.Common.Middleware
             else
             {
                 throw exception;
-                // return new ExceptionResponse(new ErrorsResponse(new Error("error", "There was an error.")), HttpStatusCode.publicServerError);
             }
         }
 
