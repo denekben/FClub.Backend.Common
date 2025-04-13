@@ -28,7 +28,7 @@ namespace FClub.Backend.Common.HttpMessaging
             return await _httpClient.SendAsync(request);
         }
 
-        public async Task SendResponse(string path, object command, RequestType type)
+        public async Task SendResponse(string path, object? command, RequestType type)
         {
             using var httpContent = new StringContent(
                 JsonSerializer.Serialize(command),
