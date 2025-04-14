@@ -17,7 +17,7 @@ namespace FClub.Backend.Common.Swagger
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
                     BearerFormat = "JWT",
-                    Scheme = "Bearer"
+                    Scheme = "bearer"
                 });
                 option.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
