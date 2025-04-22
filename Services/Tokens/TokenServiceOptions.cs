@@ -5,7 +5,9 @@ namespace FClub.Backend.Common.Services
     public class TokenServiceOptions
     {
         [Required]
-        public string Key { get; set; }
+        public string SecretKey { get; set; }
+        [Required]
+        public string ServiceSecretKey { get; set; }
         [Required]
         public string AccessTokenLifeTime { get; set; }
         [Required]

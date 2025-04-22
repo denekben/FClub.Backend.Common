@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using MailKit.Net.Smtp;
+using MailKit.Security;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using MimeKit;
+using MimeKit.Text;
 using System.Net;
-using System.Net.Mail;
 
 namespace FClub.Backend.Common.Services.EmailSender
 {
@@ -13,20 +16,55 @@ namespace FClub.Backend.Common.Services.EmailSender
             _options = options;
         }
 
-        public Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            var client = new SmtpClient(_options.SmtpHost, _options.SmtpPort)
-            {
-                EnableSsl = true,
-                Credentials = new NetworkCredential(_options.ServiceMail, _options.MailPassword)
-            };
+            var smtp = new MailKit.Net.Smtp.SmtpClient();
 
-            return client.SendMailAsync(
-                new MailMessage(
-                    from: _options.ServiceMail,
-                    to: email,
-                    subject,
-                    htmlMessage));
+            try
+            {
+                var message = new MimeMessage();
+                Console.WriteLine(_options.ServiceMail);
+                Console.WriteLine(email);
+                message.From.Add(MailboxAddress.Parse(_options.ServiceMail));
+                message.To.Add(MailboxAddress.Parse(email));
+                message.Subject = subject;
+                message.Body = new TextPart(TextFormat.Html) { Text = htmlMessage };
+
+                smtp.Timeout = 30000;
+
+                await smtp.ConnectAsync(
+                    _options.SmtpHost,
+                    _options.SmtpPort,
+                    SecureSocketOptions.SslOnConnect);
+
+                await smtp.AuthenticateAsync(
+                    new NetworkCredential(_options.ServiceMail, _options.MailPassword));
+
+                await smtp.SendAsync(message);
+            }
+            catch (AuthenticationException ex)
+            {
+                throw new InvalidOperationException("Failed to authenticate with SMTP server", ex);
+            }
+            catch (SmtpCommandException ex)
+            {
+                throw;
+            }
+            catch (SmtpProtocolException ex)
+            {
+                throw;
+            }
+            finally
+            {
+                if (smtp != null)
+                {
+                    if (smtp.IsConnected)
+                    {
+                        await smtp.DisconnectAsync(true);
+                    }
+                    smtp.Dispose();
+                }
+            }
         }
     }
 }

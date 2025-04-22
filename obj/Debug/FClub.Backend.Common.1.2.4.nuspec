@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>FClub.Backend.Common</id>
+    <version>1.2.4</version>
+    <title>FClub.Backend.Common</title>
+    <authors>denekben</authors>
+    <description>Common library for FClub microservices</description>
+    <repository type="git" url="https://github.com/denekben/FClub.Backend.Common.git" commit="c8f7abd8024b2c76276631df5f91198bf811bac2" />
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="Humanizer" version="2.14.1" exclude="Build,Analyzers" />
+        <dependency id="MailKit" version="4.11.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.3.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="9.0.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="9.0.3" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="9.0.4" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="9.0.3" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.IdentityModel.Tokens" version="8.7.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.OpenApi" version="1.6.24" exclude="Build,Analyzers" />
+        <dependency id="MimeKit" version="4.11.0" exclude="Build,Analyzers" />
+        <dependency id="RabbitMQ.Client" version="7.1.2" exclude="Build,Analyzers" />
+        <dependency id="Scrutor" version="6.0.1" exclude="Build,Analyzers" />
+        <dependency id="Swashbuckle.AspNetCore" version="8.1.0" exclude="Build,Analyzers" />
+        <dependency id="System.IdentityModel.Tokens.Jwt" version="8.7.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\Kurbanaev\Desktop\FClub\FClub\FClub.Backend.Common\bin\Debug\net8.0\FClub.Backend.Common.dll" target="lib\net8.0\FClub.Backend.Common.dll" />
+  </files>
+</package>

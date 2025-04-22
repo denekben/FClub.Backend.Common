@@ -7,7 +7,7 @@ namespace FClub.Backend.Common.ValueObjects
     {
         private static readonly Regex _firstNamePattern = new(@"^([А-ЯЁ][а-яё]{1,}|[A-Z][a-z]{1,})$");
         private static readonly Regex _secondNamePattern = new(@"^([А-ЯЁ][а-яё]+(?:-[А-ЯЁ][а-яё]+)*|[A-Z][a-z]+(?:['-][A-Z][a-z]+)*)$");
-        private static readonly Regex _patronymicPattern = new(@"^([А-ЯЁ][а-яё]{4,}(ович|овна|евич|евна|ич|инична))?$");
+        private static readonly Regex _patronymicPattern = new(@"^([А-ЯЁ][а-яё]{1,}(ович|овна|евич|евна|ич|инична))?$");
 
         public string FirstName { get; set; }
         public string SecondName { get; set; }

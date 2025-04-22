@@ -27,7 +27,7 @@ namespace FClub.Backend.Common.Services.Tokens
             };
 
             var creds = new SigningCredentials(
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key)),
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),
                 SecurityAlgorithms.HmacSha512Signature
             );
 
@@ -47,10 +47,10 @@ namespace FClub.Backend.Common.Services.Tokens
             return tokenHandler.WriteToken(token);
         }
 
-        public string GenerateInternalAccessToken(string? audience = null)
+        public string GenerateInternalAccessToken()
         {
             var creds = new SigningCredentials(
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key)),
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.ServiceSecretKey)),
                 SecurityAlgorithms.HmacSha512Signature
             );
 
@@ -58,7 +58,7 @@ namespace FClub.Backend.Common.Services.Tokens
             {
                 SigningCredentials = creds,
                 Issuer = _options.Issuer,
-                Audience = audience ?? _options.Audience
+                Audience = _options.Audience
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -75,7 +75,7 @@ namespace FClub.Backend.Common.Services.Tokens
 
         public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
         {
-            if (_options.Key == null)
+            if (_options.SecretKey == null)
                 throw new NullReferenceException("Invalid arguments for token service");
 
             var tokenValidationParameters = new TokenValidationParameters
@@ -84,7 +84,7 @@ namespace FClub.Backend.Common.Services.Tokens
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(_options.Key)),
+                        Encoding.UTF8.GetBytes(_options.SecretKey)),
                 ValidateLifetime = false
             };
             var tokenHandler = new JwtSecurityTokenHandler();
