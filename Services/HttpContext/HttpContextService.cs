@@ -16,7 +16,7 @@ namespace FClub.Backend.Common.Services
         public Guid? GetCurrentUserId()
         {
             var userIdString = _contextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                ?? throw new BadRequestException("Cannot find user");
+                ?? throw new AuthorizationException("Cannot find user");
 
             if (!Guid.TryParse(userIdString, out var userId))
             {

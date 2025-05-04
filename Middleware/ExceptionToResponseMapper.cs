@@ -17,6 +17,10 @@ namespace FClub.Backend.Common.Middleware
                 {
                     return new ExceptionResponse(new ErrorsResponse(new Error(GetErrorCode(ex), ex.Message)), HttpStatusCode.NotFound);
                 }
+                else if (exception is AuthorizationException)
+                {
+                    return new ExceptionResponse(new ErrorsResponse(new Error(GetErrorCode(ex), ex.Message)), HttpStatusCode.Forbidden);
+                }
                 else if (exception is ServiceUnavailableException)
                 {
                     return new ExceptionResponse(new ErrorsResponse(new Error(GetErrorCode(ex), ex.Message)), HttpStatusCode.InternalServerError);
