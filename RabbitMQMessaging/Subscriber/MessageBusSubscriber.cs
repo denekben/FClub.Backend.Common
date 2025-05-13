@@ -4,7 +4,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
@@ -39,9 +38,6 @@ public class MessageBusSubscriber : BackgroundService
         {
             HostName = _connectionSettings.HostName,
             Port = _connectionSettings.Port,
-            VirtualHost = _connectionSettings.VirtualHost,
-            UserName = _connectionSettings.UserName,
-            Password = _connectionSettings.Password
         };
 
         _connection = await factory.CreateConnectionAsync();
@@ -50,9 +46,7 @@ public class MessageBusSubscriber : BackgroundService
             exchange: _options.ExchangeName,
             type: _options.ExchangeType
         );
-        _queueName = string.IsNullOrEmpty(_options.QueueName)
-            ? (await _channel.QueueDeclareAsync()).QueueName
-            : _options.QueueName;
+        _queueName = (await _channel.QueueDeclareAsync()).QueueName;
 
         await _channel.QueueBindAsync(
             queue: _queueName,
@@ -70,12 +64,10 @@ public class MessageBusSubscriber : BackgroundService
     {
         await InitializeRabbitMQ();
 
-        var messageTypes = Assembly.GetExecutingAssembly()
+        var messageTypes = _options.Assembly
             .GetTypes()
-            .Where(t => t.GetInterfaces().Contains(typeof(IMessage))
-                        && t.GetConstructor(Type.EmptyTypes) != null)
-            .ToDictionary(t => t.FullName!, t => t);
-
+            .Where(t => t.GetInterfaces().Contains(typeof(IMessage)))
+            .ToDictionary(t => t.Name!, t => t);
         var consumer = new AsyncEventingBasicConsumer(_channel);
         consumer.ReceivedAsync += async (_, ea) =>
         {
@@ -94,13 +86,11 @@ public class MessageBusSubscriber : BackgroundService
 
                 var messageJson = Encoding.UTF8.GetString(ea.Body.ToArray());
                 var message = (IMessage)JsonSerializer.Deserialize(messageJson, messageType)!;
-
-                var handlerType = typeof(IMessageHandler<>).MakeGenericType(messageType);
-                var handlers = scope.ServiceProvider.GetServices(handlerType);
-
+                var handlerGenericType = typeof(IMessageHandler<>).MakeGenericType(messageType);
+                var handlers = scope.ServiceProvider.GetServices(handlerGenericType);
                 var processingTasks = handlers.Select(handler =>
                 {
-                    var handleMethod = handlerType.GetMethod("HandleAsync")!;
+                    var handleMethod = handlerGenericType.GetMethod("HandleAsync")!;
                     return (Task)handleMethod.Invoke(handler, new object[] { message, stoppingToken })!;
                 });
 
@@ -119,14 +109,13 @@ public class MessageBusSubscriber : BackgroundService
             }
         };
 
-        await _channel.BasicQosAsync(prefetchSize: 0, prefetchCount: _options.PrefetchCount, global: false);
         await _channel.BasicConsumeAsync(
             queue: _queueName,
             autoAck: false,
             consumer: consumer
         );
 
-        await Task.Delay(Timeout.Infinite, stoppingToken); // Ожидание остановки
+        await Task.Delay(Timeout.Infinite, stoppingToken);
     }
 
     public override void Dispose()

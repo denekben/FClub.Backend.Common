@@ -34,9 +34,6 @@ namespace FClub.Backend.Common.RabbitMQMessaging.Publisher
                 {
                     HostName = _connectionSettings.HostName,
                     Port = _connectionSettings.Port,
-                    UserName = _connectionSettings.UserName,
-                    Password = _connectionSettings.Password,
-                    VirtualHost = _connectionSettings.VirtualHost,
                 };
 
                 _connection = await factory.CreateConnectionAsync();
@@ -44,10 +41,7 @@ namespace FClub.Backend.Common.RabbitMQMessaging.Publisher
 
                 await _channel.ExchangeDeclareAsync(
                     exchange: _options.ExchangeName,
-                    type: _options.ExchangeType,
-                    durable: _options.Durable,
-                    autoDelete: _options.AutoDelete,
-                    arguments: _options.ExchangeArguments);
+                    type: _options.ExchangeType);
 
                 _connection.ConnectionShutdownAsync += OnConnectionShutdown;
 
@@ -76,15 +70,13 @@ namespace FClub.Backend.Common.RabbitMQMessaging.Publisher
 
             try
             {
-                var messageType = typeof(TMessage).FullName;
+                var messageType = typeof(TMessage).Name;
                 var messageBody = JsonSerializer.Serialize(message);
                 var body = Encoding.UTF8.GetBytes(messageBody);
 
                 var properties = new BasicProperties()
                 {
-                    Persistent = _options.PersistentMessages,
                     Type = messageType,
-                    Headers = _options.MessageHeaders
                 };
 
                 await _channel.BasicPublishAsync(

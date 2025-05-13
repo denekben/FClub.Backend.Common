@@ -1,11 +1,12 @@
-﻿namespace FClub.Backend.Common.RabbitMQMessaging.Subscriber
+﻿using System.Reflection;
+
+namespace FClub.Backend.Common.RabbitMQMessaging.Subscriber
 {
     public class SubscriberOptions
     {
+        public Assembly Assembly { get; set; }
         public string ExchangeName { get; set; } = "messages";
         public string ExchangeType { get; set; } = "fanout";
-        public string QueueName { get; set; } = "";
         public string RoutingKey { get; set; } = "";
-        public ushort PrefetchCount { get; set; } = 10;
     }
 }

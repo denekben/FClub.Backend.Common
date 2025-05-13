@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>FClub.Backend.Common</id>
-    <version>1.2.5</version>
+    <version>1.2.7</version>
     <title>FClub.Backend.Common</title>
     <authors>denekben</authors>
     <description>Common library for FClub microservices</description>

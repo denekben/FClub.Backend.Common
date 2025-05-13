@@ -14,11 +14,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("denekben")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Common library for FClub microservices")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.2.5.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.2.5+24df6731d8c6bf4343bd5cd0ce12b29cb593b777")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.2.8.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.2.8+53622171ddde3038106ef22bad29d0eefc3357df")]
 [assembly: System.Reflection.AssemblyProductAttribute("FClub.Backend.Common")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FClub.Backend.Common")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.2.5.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.2.8.0")]
 [assembly: System.Reflection.AssemblyMetadataAttribute("RepositoryUrl", "https://github.com/denekben/FClub.Backend.Common.git")]
 
 // Создано классом WriteCodeFragment MSBuild.

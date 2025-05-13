@@ -8,35 +8,70 @@ namespace FClub.Backend.Common.RabbitMQMessaging
     {
         public static IServiceCollection AddCustomRabbitMq(
             this IServiceCollection services,
-            RabbitMqConnectionSettings connectionSettings,
-            PublisherOptions publisherOptions,
-            SubscriberOptions subscriberOptions)
+            RabbitMqConnectionSettings connectionSettings)
         {
             services.AddSingleton(connectionSettings);
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomRabbitMqPublisher(
+            this IServiceCollection services,
+            PublisherOptions publisherOptions)
+        {
             services.AddSingleton(publisherOptions);
-            services.AddSingleton(subscriberOptions);
             services.AddSingleton<IMessageBusPublisher, RabbitMqPublisher>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomRabbitMqSubscriber(
+            this IServiceCollection services,
+            SubscriberOptions subscriberOptions)
+        {
+            services.AddSingleton(subscriberOptions);
             services.AddHostedService<MessageBusSubscriber>();
+            services
+                .Scan(s => s.FromAssemblies(subscriberOptions.Assembly)
+                .AddClasses(c => c.AssignableTo(typeof(IMessageHandler<>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
 
             return services;
         }
 
         public static IServiceCollection AddCustomRabbitMq(
             this IServiceCollection services,
-            Action<RabbitMqConnectionSettings> configureConnection,
-            Action<PublisherOptions>? configurePublisherOptions = null,
-            Action<SubscriberOptions>? configureSubscriberOptions = null)
+            Action<RabbitMqConnectionSettings> configureConnection)
         {
             var connectionSettings = new RabbitMqConnectionSettings();
             configureConnection(connectionSettings);
 
+            services.AddCustomRabbitMq(connectionSettings);
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomRabbitMqPublisher(
+            this IServiceCollection services,
+            Action<PublisherOptions> configurePublisherOptions)
+        {
             var publisherOptions = new PublisherOptions();
-            configurePublisherOptions?.Invoke(publisherOptions);
+            configurePublisherOptions.Invoke(publisherOptions);
 
+            services.AddCustomRabbitMqPublisher(publisherOptions);
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomRabbitMqSubscriber(
+            this IServiceCollection services,
+            Action<SubscriberOptions> configureSubscriberOptions)
+        {
             var subscriberOptions = new SubscriberOptions();
-            configureSubscriberOptions?.Invoke(subscriberOptions);
+            configureSubscriberOptions.Invoke(subscriberOptions);
 
-            services.AddCustomRabbitMq(connectionSettings, publisherOptions, subscriberOptions);
+            services.AddCustomRabbitMqSubscriber(subscriberOptions);
 
             return services;
         }
